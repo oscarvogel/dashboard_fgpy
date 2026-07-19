@@ -1,0 +1,51 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Python
+__pycache__/
+*.py[cod]
+.Python
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Django runtime and private data
+*.sqlite3
+*.sqlite3-*
+*.sql
+*.dump
+media/
+static/
+logs/
+*.log
+
+# Frontend dependencies and generated builds
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/vite.config.js.timestamp-*.mjs
+
+# Recovery/deployment packages and local backups
+*.zip
+*.tar
+*.tar.gz
+*.bak
+*.backup
+
+# Editors and operating systems
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp

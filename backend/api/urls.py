@@ -1,0 +1,30 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('csrf/', views.api_csrf, name='api_csrf'),
+    path('login/', views.api_login, name='api_login'),
+    path('logout/', views.api_logout, name='api_logout'),
+    path('user/', views.api_user, name='api_user'),
+    path('user/password/', views.api_user_password, name='api_user_password'),
+    path('produccion/data/', views.api_produccion_data, name='api_produccion_data'),
+    path('produccion/unidades/', views.api_unidades_negocio, name='api_unidades_negocio'),
+    path('produccion/equipos/', views.api_equipos_por_unidad, name='api_equipos_por_unidad'),
+    path('produccion/operadores/', views.api_operadores_por_unidad, name='api_operadores_por_unidad'),
+    path('produccion/tipos-operacion/', views.api_tipos_operacion_por_unidad, name='api_tipos_operacion_por_unidad'),
+    path('produccion/kpis/', views.api_produccion_kpis, name='api_produccion_kpis'),
+    path('produccion/detalle/', views.api_produccion_detalle, name='api_produccion_detalle'),
+    path('produccion/<int:produccion_id>/', views.api_produccion_delete, name='api_produccion_delete'),
+    path('produccion/export-excel/', views.api_produccion_export_excel, name='api_produccion_export_excel'),
+    path('produccion/reporte/', views.api_produccion_reporte, name='api_produccion_reporte'),
+    path('produccion/reporte/export-excel/', views.api_produccion_reporte_export_excel, name='api_produccion_reporte_export_excel'),
+    path('dashboard/ejecutivo/', views.api_dashboard_ejecutivo, name='api_dashboard_ejecutivo'),
+    path('combustible/data/', views.api_combustible_data, name='api_combustible_data'),
+    path('combustible/kpis/', views.api_combustible_kpis, name='api_combustible_kpis'),
+    path('combustible/por-equipo/', views.api_consumo_por_equipo, name='api_consumo_por_equipo'),
+    path('combustible/detalle/', views.api_combustible_detalle, name='api_combustible_detalle'),
+    path('combustible/export-excel/', views.api_combustible_export_excel, name='api_combustible_export_excel'),
+    path('combustible/consumo-por-hora/', views.api_combustible_consumo_por_hora, name='api_combustible_consumo_por_hora'),
+    path('enviar-informe-email/', views.api_enviar_informe_email, name='api_enviar_informe_email'),
+    path('informe-combustible/enviar/', views.api_enviar_informe_combustible, name='api_enviar_informe_combustible'),
+]
