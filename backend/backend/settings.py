@@ -192,6 +192,26 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 
+def _env_bool(name, default=False):
+    return os.environ.get(name, str(default)).lower() in ('1', 'true', 'yes')
+
+
+# Producción detrás de proxy TLS (Traefik/Coolify): el proxy termina TLS y
+# reenvía http interno. Las cookies _SECURE funcionan igual porque el navegador
+# ve https. DJANGO_SECURE_SSL_REDIRECT queda en False a propósito: el proxy ya
+# redirige http->https y activarlo en Django sin el encabezado del proxy
+# causaría loops de redirección.
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = _env_bool('DJANGO_SECURE_SSL_REDIRECT', False)
+SESSION_COOKIE_SECURE = _env_bool('DJANGO_SESSION_COOKIE_SECURE', False)
+CSRF_COOKIE_SECURE = _env_bool('DJANGO_CSRF_COOKIE_SECURE', False)
+SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '0') or 0)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = _env_bool('DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS', False)
+SECURE_HSTS_PRELOAD = _env_bool('DJANGO_SECURE_HSTS_PRELOAD', False)
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = os.environ.get('DJANGO_SECURE_REFERRER_POLICY', 'same-origin')
+
+
 # Email Configuration
 # Configurar según el servidor SMTP que uses (Gmail, SendGrid, etc.)
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')

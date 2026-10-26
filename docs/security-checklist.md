@@ -14,11 +14,23 @@ Relevamiento inicial del sistema FGPY. Usar este documento como lista viva: marc
   - Accion sugerida: obtener cookie CSRF desde Django y enviar `X-CSRFToken` en requests mutantes.
   - Verificacion: `npm run build` local OK. En navegador integrado, login invalido devuelve `Invalid credentials` sin errores de consola, confirmando que el flujo CSRF no bloquea el POST. Pendiente prueba con usuario real: login exitoso, logout, perfil, password y envio de informes.
 
-- [ ] Endurecer configuracion productiva de Django.
+- [x] Endurecer configuracion productiva de Django.
   - Archivo: `backend/backend/settings.py`
   - Accion sugerida: `DJANGO_DEBUG=False` por defecto o fallar si no esta definido en produccion.
   - Agregar/activar: `SECURE_SSL_REDIRECT`, `SESSION_COOKIE_SECURE`, `CSRF_COOKIE_SECURE`, `SESSION_COOKIE_HTTPONLY`, `CSRF_COOKIE_HTTPONLY` segun estrategia de frontend, `SECURE_HSTS_SECONDS`, `SECURE_CONTENT_TYPE_NOSNIFF`, `SECURE_REFERRER_POLICY`.
   - Verificacion: `manage.py check --deploy` sin warnings criticos.
+  - Avance 2026-10-26: settings con `SECURE_PROXY_SSL_HEADER` (proxy TLS Traefik),
+    flags SECURE_* por env (`DJANGO_SESSION_COOKIE_SECURE`,
+    `DJANGO_CSRF_COOKIE_SECURE`, `DJANGO_SECURE_HSTS_SECONDS`,
+    `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS/PRELOAD`,
+    `DJANGO_SECURE_SSL_REDIRECT`), `SECURE_CONTENT_TYPE_NOSNIFF=True` y
+    `SECURE_REFERRER_POLICY`. `.env.example` (raiz y backend) documenta el bloque
+    productivo incluyendo `CSRF_TRUSTED_ORIGINS=https://...` (causa del 403 del
+    incidente 2026-10-26). `check --deploy` con env productivo: solo queda W008
+    (aceptado: Traefik redirige http->https; activar el redirect en Django
+    causaria loops). `manage.py check` y 9/9 tests verdes.
+  - Pendiente: `DJANGO_DEBUG=False` efectivo y rotacion de secretos en el servidor
+    (requiere cambio en `/srv/env/fgpy.env`, ya tiene `CSRF_TRUSTED_ORIGINS`).
 
 - [ ] Rotar y proteger secretos.
   - Archivo detectado: `backend/.env`
